@@ -1,42 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="description" content="Hair Salon: expert haircuts, balayage, and curly hair care">
-    <meta name="author" content="Jorge Gonzales">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Hair Salon | Ashburn, VA">
-    <meta property="og:description" content="Experience personalized haircuts, balayage, and curly hair care at our Hair Salon!">
-    <meta property="og:url" content="https://adwords711-commits.github.io/wdd131/hair-salon/services">
-    <link rel="icon" href="favicon.ico">
-
-    <title>Salon Services</title>
-    <link rel="stylesheet" href="site-plan.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <script type="module" src="js/main.js"></script>
-     
-</head>
-<body class="about-me-page">
-    <div id="content">
-        <header>
-            <a id="logo_link" href="index.html">
-                <picture>
-                    <source srcset="images/jhovannas-hair-salon-logo.webp" type="image/webp">
-                    <img class="logo" src="images/jhovannas-hair-salon-logo.png" alt="Business Logo">
-                </picture>
-            </a>
-            <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <nav>
-                <a href="index.html">Home</a>
-                <a href="services.html">Services</a>
-                <a href="appointment.html">Book</a>
-            </nav>
-        </header>
+<%- include('partials/header') %>
         <div id="hero">
             <div id="hero-box">
                 <picture>
@@ -108,18 +70,4 @@
                 </form>
             </section>      
         </main>              
-        <footer>
-        <p>
-            <a href="https://www.jhovanashairsalon.com" title="Salon Website">www.jhovanashairsalon.com</a>          
-        </p>
-        <p>© Hair Salon</p>
-        <div class="social">
-            <!-- Social media icons -->
-            <a href="#" aria-label="Visit our Instagram page"><img src="images/instagram_icon.svg" alt="Instagram Icon"></a>
-            <a href="#" aria-label="Visit our YouTube channel"><img src="images/youtube_icon.svg" alt="YouTube Icon"></a>
-            <a href="#" aria-label="Visit our Pinterest page"><img src="images/pinterest_icon.svg" alt="Pinterest Icon"></a>
-        </div>
-    </footer>
-    </div>
-</body>
-</html>
+        <%- include('partials/footer') %>

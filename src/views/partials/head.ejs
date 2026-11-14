@@ -1,0 +1,33 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Hair Salon: expert haircuts, balayage, and curly hair care">
+    <meta name="author" content="Jorge Gonzales">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Hair Salon | Ashburn, VA">
+    <meta property="og:description" content="Experience personalized haircuts, balayage, and curly hair care at our Hair Salon!">
+    <meta property="og:url" content="https://adwords711-commits.github.io/wdd131/hair-salon/services">
+    <link rel="icon" href="favicon.ico">
+
+    <title><%= title %></title>
+    <link rel="stylesheet" href="site-plan.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="module" src="js/main.js"></script>
+
+    <% if (NODE_ENV.includes('dev')) { %>
+        <script>
+            // Get the current hostname and port from the browser
+            const host = window.location.hostname;
+            const currentPort = window.location.port;
+
+            // Calculate WebSocket port (current port + 1)
+            const wsPort = currentPort ? (parseInt(currentPort) + 1) : 3001;
+
+            // Create WebSocket connection using dynamic hostname and port
+            const ws = new WebSocket(`ws://${host}:${wsPort}`);
+            ws.onclose = () => {
+                setTimeout(() => location.reload(), 2000);
+            };
+        </script>
+    <% } %> 
+</head>
