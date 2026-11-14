@@ -1,6 +1,6 @@
 // Services data
 let services = [];
-const url = "./data/services.json";
+const url = "/data/services.json";
 
 // DOM elements
 const serviceContainer = document.querySelector("#service-container");
