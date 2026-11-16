@@ -4,7 +4,7 @@
 
 import express from 'express';
 import path from 'path';
-import { title } from 'process';
+//import { title } from 'process';
 import { fileURLToPath } from 'url';
 
 /**
@@ -61,6 +61,7 @@ app.get('/services', (req, res) => {
     const title = 'Services';
     res.render('services', { title });
 });
+
 app.get('/appointment', (req, res) => {
     const title = 'Make an Appointment';
     res.render('appointment', { title });

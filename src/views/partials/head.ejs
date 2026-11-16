@@ -10,9 +10,12 @@
     <link rel="icon" href="favicon.ico">
 
     <title><%= title %></title>
-    <link rel="stylesheet" href="site-plan.css">
     <link rel="stylesheet" href="css/styles.css">
-    <script type="module" src="js/main.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script type="module" src="/js/main.js"></script>
 
     <% if (NODE_ENV.includes('dev')) { %>
         <script>

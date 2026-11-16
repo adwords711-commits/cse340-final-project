@@ -189,7 +189,7 @@ if (serviceContainer) {
       price: dynamicPrice
     });
 
-    window.location.href = `appointment.html?${params}`;
+    window.location.href = `appointment?${params}`;
 
   });
 

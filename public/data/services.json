@@ -1,5 +1,6 @@
 [
   {
+    "id": "womens-haircut",
     "name": "Women's Haircut",
     "category": ["Cut"],
     "description": "Women's haircut tailored to your style.",
@@ -9,6 +10,7 @@
     "price": { "short": 45, "mid": 60, "long": 75 }
   },
   {
+    "id": "womens-curly-hair",
     "name": "Women's Curly Hair",
     "category": ["Curly"],
     "description": "Designed for curly and natural curly hair.",
@@ -18,6 +20,7 @@
     "price": { "short": 65, "mid": 95, "long": 125 }
   },
   {
+    "id": "mens-haircut",
     "name": "Men's Haircut",
     "category": ["Cut"],
     "description": "Clean and modern men's haircut.",
@@ -27,6 +30,7 @@
     "price": { "short": 25, "mid": 40, "long": 55 }
   },
   {
+    "id": "mens-curly-hair",
     "name": "Men's Curly Hair",
     "category": ["Curly"],
     "description": "Men's curly haircut tailored to your style and curl type.",
@@ -36,6 +40,7 @@
     "price": { "short": 65, "mid": 85, "long": 105 }
   },
   {
+    "id": "hair-color",
     "name": "Hair Colour",
     "category": ["Color"],
     "description": "Full hair coloring with professional products.",
@@ -45,6 +50,7 @@
     "price": { "short": 80, "mid": 95, "long": 110 }
   },
   {
+    "id": "balayage",
     "name": "Balayage",
     "category": ["Color"],
     "description": "Natural-looking highlights with the balayage technique.",
@@ -54,6 +60,7 @@
     "price": { "short": 150, "mid": 225, "long": 350 }
   },
   {
+    "id": "keratin-treatment",
     "name": "Keratin Treatment",
     "category": ["Treatment"],
     "description": "Smooth and frizz-free hair with professional keratin treatment.",
