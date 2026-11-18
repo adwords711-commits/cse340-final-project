@@ -6,6 +6,7 @@ import express from 'express';
 import path from 'path';
 //import { title } from 'process';
 import { fileURLToPath } from 'url';
+import { readFile } from 'node:fs/promises'; // Reads services.json file asynchronously
 
 /**
  * declare important variables
@@ -16,8 +17,15 @@ const __dirname = path.dirname(__filename);
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
 
-
-
+const services = JSON.parse(  // Convert the JSON text into a JavaScript array
+    await readFile( // read the file
+        path.join(__dirname, 'public/data/services.json'),  // Locate services.json
+        'utf-8' // rea its content as text
+    )
+);
+const servicesById = Object.fromEntries(  // Create an object indexed by service id
+        services.map(service => [service.id, service]) // convert each service into and Id-valud pair
+);
 
 // Create an instance of an Express application
 const app = express();
@@ -60,6 +68,47 @@ app.get('/', (req, res) => {
 app.get('/services', (req, res) => {
     const title = 'Services';
     res.render('services', { title });
+});
+
+// Enhanced service detail route with sorting
+app.get('/services/:serviceId', (req, res, next) => {
+    const serviceId = req.params.serviceId;
+    const service = servicesById[serviceId];
+
+    if (!service) {
+        const err = new Error(`Service ${serviceId} not found`);
+        err.status = 404;
+        return next(err);
+    }
+
+    // Get sort parameter (default to 'time')
+    const sortBy = req.query.sort || 'length';
+
+    // Create a copy of sections to sort
+    let sortedPrices = Object.entries(service.price).map(([length, price]) => ({
+        length,
+        price
+    }));
+
+    // Sort based on the parameter
+    switch (sortBy) {
+        case 'price':
+            sortedPrices.sort((a, b) => b.price - a.price);
+            break;
+        case 'length':
+        default:
+            // Keep original time order as default
+            break;
+    }
+
+    console.log(`Viewing service: ${serviceId}, sorted by: ${sortBy}`);
+
+    res.render('service-detail', {
+        title: service.name,
+        service: service,
+        sortedPrices: sortedPrices,
+        currentSort: sortBy
+    });
 });
 
 app.get('/appointment', (req, res) => {

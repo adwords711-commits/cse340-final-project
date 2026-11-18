@@ -1,0 +1,52 @@
+<%- include('partials/header') %>
+
+
+<main>
+    <div class="service-header">
+        <h1><%= service.name %></h1>
+        <p class="course-meta">
+            <%= service.duration %> • <%= service.category.join(', ') %></p>
+        <p class="service-description"><%= service.description %></p>
+        <p>Rating: <%= service.rating %> / 5</p>
+    </div>
+
+    <div class="service-details">
+        <h2>About This Service</h2>
+        <img src="/<%= service.image.replace('./', '') %>" alt="<%= service.name %>">
+        
+    </div>
+
+    <div class="pricing">
+        <div class="pricing-header">
+        <h2>Pricing Options</h2>
+
+        <div class="sort-options">
+            <span>Sort by: </span>
+
+            <a href="/services/<%= service.id %>"
+                class="<%= currentSort === 'length' ? 'active' : '' %>">
+                Hair Length
+            </a>
+
+            <a href="/services/<%= service.id %>?sort=price"
+                class="<%= currentSort === 'price' ? 'active' : '' %>">
+                Price
+            </a>
+        </div>
+    </div>
+
+    <div class="price-list">
+        <% sortedPrices.forEach(item => { %>
+            <div class="price-card">
+                <h3><%= item.length %> Hair</h3>
+                <p>$<%= item.price %></p>
+            </div>
+        <% }); %>
+    </div>
+    </div>
+
+    <div class="navigation">
+        <p><a href="/services">&larr; Back to Services</a></p>
+    </div>
+</main>
+<%- include('partials/footer') %>
