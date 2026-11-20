@@ -71,6 +71,9 @@ function serviceTemplate(service) {
         </div>
 
         <h2>${service.name}</h2>
+        <a href="/services/${service.id}" class="view-details-btn">
+            View Details
+        </a>
 
         <p class="service-description">
           ${service.description}
