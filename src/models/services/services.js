@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises'; // Reads services.json file asynchronously
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,9 +18,9 @@ const getAllServices = () => {
     return services;
 };
 
-const getServiceById = (serviceId => {
+const getServiceById = (serviceId) => {
     return services[serviceId] || null;
-});
+};
 
 const getSortedPrices = (prices, sortBy) => {
     const sortedPrices = [...prices];
@@ -33,17 +33,17 @@ const getSortedPrices = (prices, sortBy) => {
     }
 };
 
-const getServiceByCategory = () => {
-    const category = {};
+const getServicesByCategory = () => {
+    const categories = {};
     Object.values(services).forEach(service => {
-        service.category.forEach(category => {
-            if (!categories[category]) {
-            category[category] = [];
-        }
-        categories[category].push(service);
+        service.category.forEach(categoryName => {
+            if (!categories[categoryName]) {
+                categories[categoryName] = [];
+            }
+            categories[categoryName].push(service);
         });
     });    
     return categories;
 };
 
-export {getAllServices, getServiceById };
+export {getAllServices, getServiceById, getSortedPrices, getServicesByCategory };
