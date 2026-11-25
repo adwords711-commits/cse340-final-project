@@ -1,26 +1,94 @@
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { readFile } from 'node:fs/promises'; // Reads services.json file asynchronously
+import db from '../db.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+/**
+ * Gets all services and their associated prices from the database.
+ * Array of service and price rows
+ * @returns {Promise<Array>}
+ */
 
-const servicesPath = path.join(__dirname, '../../../public/data/services.json');
+// Retrieves all services with their associated prices
+const getAllServices = async () => {
+    const query = `
+        SELECT S.*, sp.hair_length, sp.price
+        FROM services s
+        JOIN service_prices sp ON s.id = sp.service_id
+        ORDER BY s.id, sp.id
+    `;
+    // Executes the database query
+    const result = await db.query(query);
 
-const servicesArray = JSON.parse(await readFile(servicesPath, 'utf-8'));
-const services = Object.fromEntries(
-    servicesArray.map(service => [service.id, service])
-);
+    // Groups database rows by service
+    const services = {};
 
-// Model functions that handle all data access
-
-const getAllServices = () => {
-    return services;
+    result.rows.forEach(row => {
+        if (!services[row.id]) {
+            services[row.id] = {
+                id: row.slug,
+                name: row.name,
+                category: [row.category],
+                description: row.description,
+                duration: `${row.duration} min`,
+                image: row.image,
+                price: {}
+            };
+        }
+        // Adds the price for each hair lenght
+        services[row.id].price[row.hair_length] = Number(row.price);
+    });
+    // Returns the query results
+    return Object.values(services);
 };
 
-const getServiceById = (serviceId) => {
-    return services[serviceId] || null;
+/**
+ * Core function that gets all prices for a specific service.
+ * Works with either service ID or slug.
+ * @param {string|number} identifier - Service ID or slug
+ * @param {string} identifierType - 'id' or 'slug' (default: 'slug')
+ * @returns {Promise<Array>} Array of service prices
+ */
+const getPricesByService = async (identifier, identifierType = 'slug') => {
+    // Build WHERE clause dynamically based on whether we're searching by ID or slug
+    // Using $1 prevents SQL injection - never concatenate user input into SQL!
+    const whereClause = identifierType === 'id' ? 's.id = $1' : 's.slug = $1';
+    
+    
+    /**
+     * Join services with service_prices to get complete service information.
+     * Note: The service_prices table stores the different prices for each hair length.
+     */
+    const query = `
+        SELECT S.*, sp.hair_length, sp.price
+        FROM services s
+        JOIN service_prices sp ON s.id = sp.service_id
+        WHERE ${whereClause}
+        ORDER BY sp.id
+    `;
+    // Executes the query using the identifier as a paramenter
+    const result = await db.query(query, [identifier]);
+
+    // Returns null if the service is not found
+    if (result.rows.length === 0) return null;
+
+    // Creates one service object from the database rows
+    const service = {
+        id: result.rows[0].slug,
+        name: result.rows[0].name,
+        category: [result.rows[0].category],
+        description: result.rows[0].description,
+        duration: `${result.rows[0].duration} min`,
+        image: result.rows[0].image,
+        price: {}        
+    };
+
+    result.rows.forEach(row => {
+        // Adds each hair length price
+        service.price[row.hair_length] = Number(row.price);
+    });
+
+    // Returns the matching service price rows
+    return result.rows;
 };
+    
 
 const getSortedPrices = (prices, sortBy) => {
     const sortedPrices = [...prices];
@@ -33,17 +101,15 @@ const getSortedPrices = (prices, sortBy) => {
     }
 };
 
-const getServicesByCategory = () => {
-    const categories = {};
-    Object.values(services).forEach(service => {
-        service.category.forEach(categoryName => {
-            if (!categories[categoryName]) {
-                categories[categoryName] = [];
-            }
-            categories[categoryName].push(service);
-        });
-    });    
-    return categories;
-};
+/**
+ * Wrapper functions maintain a simple API while using the core function internally.
+ * These allow us to retrieve service prices using a service slug.
+ * Example: getpricesBySlug('balayage') calls getPricesByService('balayage', 'slug')
+ */
+const getPricesByServiceSlug = (serviceSlug) => 
+    getPricesByService(serviceSlug, 'slug');
 
-export {getAllServices, getServiceById, getSortedPrices, getServicesByCategory };
+export {
+    getAllServices, 
+    getPricesByServiceSlug,
+    getSortedPrices};
