@@ -1,4 +1,4 @@
-<%- include('partials/header') %>
+<%- include('../partials/header') %>
 
 <main>
     <div class="service-header">
@@ -6,7 +6,6 @@
         <p class="course-meta">
             <%= service.duration %> • <%= service.category.join(', ') %></p>
         <p class="service-description"><%= service.description %></p>
-        <p>Rating: <%= service.rating %> / 5</p>
     </div>
 
     <div class="service-details">
@@ -48,4 +47,4 @@
         <p><a href="/services">&larr; Back to Services</a></p>
     </div>
 </main>
-<%- include('partials/footer') %>
+<%- include('../partials/footer') %>

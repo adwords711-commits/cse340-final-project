@@ -9,7 +9,7 @@ import db from '../db.js';
 // Retrieves all services with their associated prices
 const getAllServices = async () => {
     const query = `
-        SELECT S.*, sp.hair_length, sp.price
+        SELECT s.*, sp.hair_length, sp.price
         FROM services s
         JOIN service_prices sp ON s.id = sp.service_id
         ORDER BY s.id, sp.id
@@ -44,7 +44,7 @@ const getAllServices = async () => {
  * Works with either service ID or slug.
  * @param {string|number} identifier - Service ID or slug
  * @param {string} identifierType - 'id' or 'slug' (default: 'slug')
- * @returns {Promise<Array>} Array of service prices
+ * @returns {Promise<Object|null>} Service object with prices, or null if not found
  */
 const getPricesByService = async (identifier, identifierType = 'slug') => {
     // Build WHERE clause dynamically based on whether we're searching by ID or slug
@@ -57,7 +57,7 @@ const getPricesByService = async (identifier, identifierType = 'slug') => {
      * Note: The service_prices table stores the different prices for each hair length.
      */
     const query = `
-        SELECT S.*, sp.hair_length, sp.price
+        SELECT s.*, sp.hair_length, sp.price
         FROM services s
         JOIN service_prices sp ON s.id = sp.service_id
         WHERE ${whereClause}
@@ -86,7 +86,7 @@ const getPricesByService = async (identifier, identifierType = 'slug') => {
     });
 
     // Returns the matching service price rows
-    return result.rows;
+    return service;
 };
     
 

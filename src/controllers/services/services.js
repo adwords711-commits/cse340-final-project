@@ -1,23 +1,23 @@
-import { getAllServices, getServiceById, getSortedPrices } from '../../models/services/services.js';
+import { getAllServices, getPricesByServiceSlug, getSortedPrices } from '../../models/services/services.js';
 
 // Route handler for the services listing page
-const servicesPage = (req, res) => {
-    const services = getAllServices();
+const servicesPage = async (req, res) => {
+    const services = await getAllServices();
 
-    res.render('services', {
+    res.render('services/list', {
         title: 'Services',
         services: services
     });
 };
 
 // Route handler for individual service detail pages
-const serviceDetailPage = (req, res, next) => {
-    const serviceId = req.params.serviceId;
-    const service = getServiceById(serviceId);
+const serviceDetailPage = async (req, res, next) => {
+    const serviceSlug = req.params.serviceSlug;
+    const service = await getPricesByServiceSlug(serviceSlug);
 
     // If service doesn't exist, create 404 error
     if (!service) {
-        const err = new Error(`Service ${serviceId} not found`);
+        const err = new Error(`Service ${serviceSlug} not found`);
         err.status = 404;
         return next(err);
     }
@@ -31,7 +31,7 @@ const serviceDetailPage = (req, res, next) => {
 
     const sortedPrices = getSortedPrices(prices, sortBy);
 
-    res.render('service-detail', {
+    res.render('services/detail', {
         title: service.name,
         service: service,
         sortedPrices: sortedPrices,
